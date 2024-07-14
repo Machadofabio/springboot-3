@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
@@ -42,6 +43,12 @@ public class AnimeController {
     public ResponseEntity<Anime> findById(@PathVariable Long id){
         log.info("Endpoint findById() accessed at: " + dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
         return new ResponseEntity<>(animeService.findById(id), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/find")
+    public ResponseEntity<Anime> findByName(@RequestParam String name){
+        log.info("Endpoint findByName() accessed at: " + dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
+        return new ResponseEntity<>(animeService.findByName(name), HttpStatus.OK);
     }
 
     @PostMapping
