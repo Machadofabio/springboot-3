@@ -5,8 +5,12 @@ import estudo.springboot.springboot3.dto.request.PostAnimeDto;
 import estudo.springboot.springboot3.dto.request.UpdateAnimeDto;
 import estudo.springboot.springboot3.service.AnimeService;
 import estudo.springboot.springboot3.util.DateUtil;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,9 +38,9 @@ public class AnimeController {
     private AnimeService animeService;
 
     @GetMapping
-    public ResponseEntity<List<Anime>> listAll(){
+    public ResponseEntity<Page<Anime>> listAll(Pageable pageable){
         log.info("Endpoint listAall() accessed at: " + dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
-        return ResponseEntity.ok(animeService.listAll());
+        return ResponseEntity.ok(animeService.listAll(pageable));
     }
 
     @GetMapping("/{id}")
@@ -52,7 +56,7 @@ public class AnimeController {
     }
 
     @PostMapping
-    public ResponseEntity<Anime> saveAnime(@RequestBody PostAnimeDto anime){
+    public ResponseEntity<Anime> saveAnime(@RequestBody @Valid PostAnimeDto anime){
         log.info("Endpoint saveAnime() accessed at: " + dateUtil.formatLocalDateTimeToDatabaseStyle(LocalDateTime.now()));
         return ResponseEntity.ok(animeService.save(anime));
     }
